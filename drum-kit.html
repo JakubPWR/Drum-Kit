@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JS-DRUM-KIT</title>
+    <link rel="stylesheet" href="drumk-kit.css">
+  </head>
+  <body>
+    <div class="keys">
+      <div class="key" data-key="65">
+        <kbd>A</kbd>
+        <span class="sound">clap</span>
+      </div>
+      <div class="key" data-key="83">
+        <kbd>S</kbd>
+        <span class="sound">hihat</span>
+      </div>
+    </div>
+    <audio data-key="65" src="sounds/clap.wav"></audio>
+    <audio data-key="83" src="sounds/hihat.wav"></audio>
+  <script>
+    function playSound(e)
+    {
+      const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+      const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+      if(!audio) return;
+
+      key.classList.add('playing');
+      audio.currentTime = 0;
+      audio.play();
+    }
+    function removePlaying(e)
+    {
+      if (e.propertyName !== 'transform') return;
+      e.target.classList.remove('playing');
+    }
+    const keys = Array.from(document.querySelectorAll('.key'));
+    keys.forEach(key => key.addEventListener('transitionend', removePlaying));
+    window.addEventListener("keydown",playSound);
+  </script>
+  </body>
+</html>
